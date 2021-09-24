@@ -12,11 +12,11 @@ namespace Owoify
 
         public static string Owoify(string value, OwoifyLevel level = OwoifyLevel.Owo)
         {
-            var wordRegex = new Regex(@"(\A[^\s<>]+)|(\s\K[^\s<>]+)");
+            var wordRegex = new Regex(@"[\s>][^\s<>]+");
             var wordMatches = wordRegex.Matches(value);
 
-            var spaceRegex = new Regex(@"(\s+)|(<[^\s]+>)");
-            var spaceMatches = spaceRegex.Matches(value);
+            var spaceRegex = new Regex(@"(\s|(<[^\s]+>))+");
+            var spaceMatches = spaceRegex.Matches(" "+value);
 
             var words = wordMatches
                 .Cast<Match>()
@@ -46,7 +46,7 @@ namespace Owoify
                         break;
                 }
 
-                return word;
+                return word.Substring(1);
             });
 
             var result = Utility.InterleaveArrays(words, spaces);
